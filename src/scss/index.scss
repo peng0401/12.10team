@@ -1,4 +1,73 @@
 *{
     padding: 0;
     margin: 0;
+    list-style: none;
+}
+
+html,body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.wrap {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+
+    .nav-list {
+        width: 100%;
+        height: 44px;
+        display: flex;
+        line-height: 44px;
+        border-bottom: 1px solid red;
+        li {
+            padding: 0 10px;
+            &.active {
+                color: red;
+                border-bottom: 1px solid red;
+            }
+        }
+    }
+    .con {
+        width: 100%;
+        flex: 1;
+        overflow: hidden;
+        position: absolute;
+        .inner-con {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            &::before{
+                content: attr(up);
+                width: 100%;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+                background: pink;
+                position: absolute;
+                bottom: -40px;
+                left: 0;
+            }
+            dl {
+                width: 46%;
+                margin: 10px 2%;
+                dt {
+                    width: 100%;
+                    img {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+     
+    }
+
+    footer {
+        width: 100%;
+        height: 44px;
+        background: red;
+    }
 }
