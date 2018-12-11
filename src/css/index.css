@@ -28,12 +28,12 @@ html, body {
   .wrap .con {
     width: 100%;
     flex: 1;
-    overflow: hidden;
-    position: absolute; }
+    overflow: hidden; }
     .wrap .con .inner-con {
       width: 100%;
       display: flex;
-      flex-wrap: wrap; }
+      flex-wrap: wrap;
+      min-height: 100%; }
       .wrap .con .inner-con::before {
         content: attr(up);
         width: 100%;

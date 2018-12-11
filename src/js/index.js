@@ -5,40 +5,63 @@ require(['./js/config.js'],() => {
             type = 1,
             total;
 
-        var srcoll = new bscroll(".con",{
+        var scroll = new bscroll(".con",{
             probeType : 2
         })
 
         var innerCon = document.querySelector(".inner-con")
-        srcoll.on('srcoll',() => {
-            console.log(this.maxScrollY)
+        scroll.on('scroll',function() {
+          
             if(this.y < this.maxScrollY -44) {
-                innerCon.setAttribute("up",'释放加载更多')
-            }
-        })
-
-        srcoll.on("touchEnd",() => {
-
-        })
-        $.ajax({
-            url : '/api/get/list',
-            dataType : "json",
-            data : {
-                page : page,
-                page_size : page_size,
-                type : type
-            },
-            success(data) {
-                console.log(data)
-                if(data.code === 1) {
-                    renderList(data.data)
-                    total = data.total;
+                if(page < total) {
+                    innerCon.setAttribute("up",'释放加载更多')
+                } else {
+                    innerCon.setAttribute("up",'没有更多数据')
                 }
-            },
-            error(err) {
-                console.warn(err)
+            }else if(this.y < this.maxScrollY - 22) {
+                if(page < total) {
+                    innerCon.setAttribute("up",'上拉加载')
+                } else {
+                    innerCon.setAttribute("up",'没有更多数据')
+                }
             }
         })
+
+        scroll.on("touchEnd",() => {
+           if(innerCon.getAttribute('up') === "释放加载更多") {
+               if(page < total) {
+                   page++;
+                   getList();
+                   innerCon.setAttribute("up","上拉加载")
+               } else {
+                   innerCon.setAttribute("up",'没有更多数据')
+               }
+           }
+        })
+
+        getList()
+        function getList() {
+            $.ajax({
+                url : '/api/get/list',
+                dataType : "json",
+                data : {
+                    page : page,
+                    page_size : page_size,
+                    type : type
+                },
+                success(data) {
+                    console.log(data)
+                    if(data.code === 1) {
+                        renderList(data.data)
+                        total = data.total;
+                    }
+                },
+                error(err) {
+                    console.warn(err)
+                }
+            })
+        }
+        
 
         function renderList(data) {
             var BaseUrl = 'http://localhost:3000/images/';
@@ -52,6 +75,18 @@ require(['./js/config.js'],() => {
             })
 
             document.querySelector(".inner-con").innerHTML += str;
+            scroll.refresh()
         }
+
+        var navlist = document.querySelector('.nav-list');
+        navlist.addEventListener("click",(e) => {
+            type = e.target.getAttribute("data-id")
+            document.querySelector(".inner-con").innerHTML = '';
+            page = 1;
+            getList()
+        })
+
     })
+
+    
 }) 

@@ -35,11 +35,11 @@ html,body {
         width: 100%;
         flex: 1;
         overflow: hidden;
-        position: absolute;
         .inner-con {
             width: 100%;
             display: flex;
             flex-wrap: wrap;
+            min-height: 100%;
             &::before{
                 content: attr(up);
                 width: 100%;
